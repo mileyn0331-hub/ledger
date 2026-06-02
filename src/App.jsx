@@ -7,7 +7,7 @@ import MonthView  from './pages/MonthView'
 import YearView   from './pages/YearView'
 
 export default function App() {
-  const [session,  setSession]  = useState(undefined)   // undefined = loading
+  const [session,  setSession]  = useState(undefined)
   const [view,     setView]     = useState('week')
   const [theme,    setTheme]    = useState(() => localStorage.getItem('kb_theme') || 'light')
   const [readOnly, setReadOnly] = useState(false)
@@ -19,32 +19,50 @@ export default function App() {
     return () => subscription.unsubscribe()
   }, [])
 
-  // ── Theme ────────────────────────────────────────────────────────────────
+  // ── Theme ─────────────────────────────────────────────────────────────────
   useEffect(() => {
     document.body.setAttribute('data-theme', theme)
     localStorage.setItem('kb_theme', theme)
   }, [theme])
 
-  // ── Data hooks (only when logged in) ─────────────────────────────────────
+  // ── 전역 단축키 (모든 뷰에서 작동) ────────────────────────────────────────
+  useEffect(() => {
+    function onKey(e) {
+      const tag = e.target.tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
+
+      switch (e.key) {
+        case 'd': case 'D':
+          e.preventDefault()
+          setTheme(t => t === 'dark' ? 'light' : 'dark')
+          break
+        case 'r': case 'R':
+          e.preventDefault()
+          setReadOnly(r => !r)
+          break
+        case '1': e.preventDefault(); setView('week');  break
+        case '2': e.preventDefault(); setView('month'); break
+        case '3': e.preventDefault(); setView('year');  break
+        default: break
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  // ── Data hooks ────────────────────────────────────────────────────────────
   const userId = session?.user?.id ?? null
   const { entries, loading, addEntry, updateEntry, deleteEntry, deleteByDayKeys } = useEntries(userId)
   const { incomeMap, setIncome } = useIncome(userId)
 
-  // ── Loading splash ────────────────────────────────────────────────────────
   if (session === undefined) {
-    return (
-      <div className="loading-wrap">
-        <div className="spinner" />
-        로딩 중...
-      </div>
-    )
+    return <div className="loading-wrap"><div className="spinner" />로딩 중...</div>
   }
 
   if (!session) return <LoginPage />
 
   const userEmail = session.user.email
 
-  // ── Main shell ────────────────────────────────────────────────────────────
   const tabs = [
     { id: 'week',  label: '주간' },
     { id: 'month', label: '월간결산' },

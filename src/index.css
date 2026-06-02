@@ -442,7 +442,7 @@ body {
   background: var(--surface);
   border-radius: var(--radius-lg);
   padding: 22px 24px;
-  width: 360px;
+  width: 480px;
   border: 1px solid var(--border2);
   box-shadow: var(--shadow);
 }
