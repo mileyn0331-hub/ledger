@@ -97,6 +97,9 @@ export default function App() {
               incomeMap={incomeMap}
               setIncome={setIncome}
               readOnly={readOnly}
+              onViewChange={setView}
+              onToggleTheme={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
+              onToggleReadOnly={() => setReadOnly(r => !r)}
             />
           )}
           {view === 'month' && (
