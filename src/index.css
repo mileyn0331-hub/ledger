@@ -341,7 +341,7 @@ body {
 .cat-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .entry-cat-name { font-size: 10px; color: var(--text3); }
 .entry-name { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.entry-amount { font-size: 11px; font-family: var(--font-mono); font-weight: 500; text-align: right; margin-top: 1px; }
+.entry-amount { font-size: 11px; font-family: var(--font-mono); font-weight: 500; white-space: nowrap; }
 
 /* ── Add button ── */
 .add-entry-btn {

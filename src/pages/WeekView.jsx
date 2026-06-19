@@ -326,8 +326,16 @@ export default function WeekView({
                             <span className="entry-cat-name">{sub.emoji} {sub.name}</span>
                           </div>
                         )}
-                        <div className="entry-name" style={{ paddingLeft: showCat ? 0 : 10 }}>{entry.name}</div>
-                        <div className="entry-amount" style={{ color: grp.color }}>{fmt(entry.amount)}</div>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'baseline',
+                          justifyContent: 'space-between',
+                          gap: 6,
+                          paddingLeft: showCat ? 0 : 10,
+                        }}>
+                          <span className="entry-name" style={{ flex: 1, minWidth: 0 }}>{entry.name}</span>
+                          <span className="entry-amount" style={{ color: grp.color, flexShrink: 0 }}>{fmt(entry.amount)}</span>
+                        </div>
                       </div>
                     )
                   })}
