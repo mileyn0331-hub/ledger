@@ -314,7 +314,7 @@ export default function WeekView({
                       <div
                         key={entry.id}
                         data-focusentry={`${dayIdx}-${entryIdx}`}
-                        className={`entry ${isFocused ? 'selected' : ''}`}
+                        className={`entry ${isFocused ? 'selected' : ''} ${!showCat ? 'grouped' : ''}`}
                         tabIndex={0}
                         onClick={() => setFocus({ type: FOCUS_ENTRY, dayIdx, entryIdx })}
                         onFocus={() => setFocus({ type: FOCUS_ENTRY, dayIdx, entryIdx })}
@@ -331,7 +331,6 @@ export default function WeekView({
                           alignItems: 'baseline',
                           justifyContent: 'space-between',
                           gap: 6,
-                          paddingLeft: showCat ? 0 : 10,
                         }}>
                           <span className="entry-name" style={{ flex: 1, minWidth: 0 }}>{entry.name}</span>
                           <span className="entry-amount" style={{ color: grp.color, flexShrink: 0 }}>{fmt(entry.amount)}</span>

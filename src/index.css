@@ -334,6 +334,7 @@ body {
   transition: background .1s;
   outline: none;
 }
+.entry.grouped { margin-bottom: 0px; padding-top: 1px; padding-bottom: 1px; }
 .entry:hover { background: var(--surface2); }
 .entry.selected { border-color: var(--olive); background: var(--olive-light); }
 .entry:focus-visible { border-color: var(--olive); }
