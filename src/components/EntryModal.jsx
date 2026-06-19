@@ -121,44 +121,59 @@ export default function EntryModal({ entry, onSave, onDelete, onClose }) {
             border: `1px solid ${field === 1 ? 'var(--olive)' : 'var(--border)'}`,
             borderRadius: 'var(--radius)',
             background: 'var(--surface2)',
-            padding: '6px 10px',
             cursor: 'pointer',
             outline: field === 1 ? '2px solid var(--olive)' : 'none',
             outlineOffset: 2,
+            overflow: 'hidden',
           }} onClick={() => setField(1)}>
-            {/* group label */}
-            <div style={{ fontSize: 10, color: currentSub.groupColor, fontWeight: 600, marginBottom: 2 }}>
-              [{currentSub.groupName}]
+            {/* 선택된 항목 헤더 */}
+            <div style={{ padding: '6px 10px', borderBottom: '1px solid var(--border)' }}>
+              <div style={{ fontSize: 10, color: currentSub.groupColor, fontWeight: 600, marginBottom: 2 }}>
+                [{currentSub.groupName}]
+              </div>
+              <div style={{ fontSize: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span>{currentSub.emoji}</span>
+                <span style={{ fontWeight: 500 }}>{currentSub.name}</span>
+                <span style={{ fontSize: 10, color: 'var(--text3)', marginLeft: 'auto' }}>
+                  {catIdx + 1}/{SUB_LIST.length}
+                </span>
+              </div>
             </div>
-            {/* current sub */}
-            <div style={{ fontSize: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span>{currentSub.emoji}</span>
-              <span style={{ fontWeight: 500 }}>{currentSub.name}</span>
-            </div>
-            {/* mini list: show surrounding items */}
-            <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 1 }}>
-              {SUB_LIST.slice(Math.max(0, catIdx - 2), Math.min(SUB_LIST.length, catIdx + 3)).map((s, i) => {
-                const absIdx = Math.max(0, catIdx - 2) + i
-                const isSelected = absIdx === catIdx
-                return (
-                  <div
-                    key={s.id}
-                    onClick={e => { e.stopPropagation(); setCatIdx(absIdx); setField(1) }}
-                    style={{
-                      fontSize: 11,
-                      padding: '2px 6px',
-                      borderRadius: 4,
-                      background: isSelected ? 'var(--olive-light)' : 'transparent',
-                      color: isSelected ? 'var(--olive)' : 'var(--text3)',
-                      fontWeight: isSelected ? 600 : 400,
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {s.emoji} {s.name}
-                    {isSelected && <span style={{ marginLeft: 4, fontSize: 9 }}>◀</span>}
+            {/* 스크롤 가능한 전체 목록 */}
+            <div style={{ maxHeight: 160, overflowY: 'auto', padding: '4px 0' }}>
+              {GROUPS.map(g => (
+                <div key={g.id}>
+                  <div style={{
+                    fontSize: 10, fontWeight: 700, color: g.color,
+                    padding: '4px 10px 2px', letterSpacing: '.3px',
+                  }}>
+                    [{g.name}]
                   </div>
-                )
-              })}
+                  {g.subs.map(s => {
+                    const absIdx = SUB_LIST.findIndex(sl => sl.id === s.id)
+                    const isSelected = absIdx === catIdx
+                    return (
+                      <div
+                        key={s.id}
+                        onClick={e => { e.stopPropagation(); setCatIdx(absIdx); setField(1) }}
+                        style={{
+                          fontSize: 13,
+                          padding: '4px 10px',
+                          background: isSelected ? 'var(--olive-light)' : 'transparent',
+                          color: isSelected ? 'var(--olive)' : 'var(--text)',
+                          fontWeight: isSelected ? 600 : 400,
+                          cursor: 'pointer',
+                          display: 'flex', alignItems: 'center', gap: 6,
+                        }}
+                      >
+                        <span>{s.emoji}</span>
+                        <span>{s.name}</span>
+                        {isSelected && <span style={{ marginLeft: 'auto', fontSize: 10, color: 'var(--olive)' }}>✓</span>}
+                      </div>
+                    )
+                  })}
+                </div>
+              ))}
             </div>
           </div>
         </div>

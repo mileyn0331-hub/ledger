@@ -261,8 +261,15 @@ export default function WeekView({
           const isDayCol = focus.dayIdx === dayIdx
 
           return (
-            <div className="day-col" key={dk} style={{ position: 'relative' }}>
-              <div className="day-header">
+            <div
+              className="day-col"
+              key={dk}
+              style={{
+                position: 'relative',
+                background: isToday ? 'var(--olive-light)' : undefined,
+              }}
+            >
+              <div className="day-header" style={{ background: isToday ? 'var(--olive-dim)' : undefined }}>
                 <div className="day-name">{DAY_NAMES[dow]}</div>
                 <div className={[
                   'day-date',
@@ -300,6 +307,9 @@ export default function WeekView({
                     const grp = getGroup(entry.cat_id)
                     const sub = getSub(entry.cat_id)
                     const isFocused = isDayCol && focus.type === FOCUS_ENTRY && focus.entryIdx === entryIdx
+                    // 바로 이전 항목과 같은 카테고리면 카테고리 행 숨김
+                    const prevEntry = entryIdx > 0 ? dayEnts[entryIdx - 1] : null
+                    const showCat = !prevEntry || prevEntry.cat_id !== entry.cat_id
                     return (
                       <div
                         key={entry.id}
@@ -310,11 +320,13 @@ export default function WeekView({
                         onFocus={() => setFocus({ type: FOCUS_ENTRY, dayIdx, entryIdx })}
                         onDoubleClick={() => !readOnly && setModal({ mode: 'edit', entry })}
                       >
-                        <div className="entry-cat-row">
-                          <span className="cat-dot" style={{ background: grp.color }} />
-                          <span className="entry-cat-name">{sub.emoji} {sub.name}</span>
-                        </div>
-                        <div className="entry-name">{entry.name}</div>
+                        {showCat && (
+                          <div className="entry-cat-row">
+                            <span className="cat-dot" style={{ background: grp.color }} />
+                            <span className="entry-cat-name">{sub.emoji} {sub.name}</span>
+                          </div>
+                        )}
+                        <div className="entry-name" style={{ paddingLeft: showCat ? 0 : 10 }}>{entry.name}</div>
                         <div className="entry-amount" style={{ color: grp.color }}>{fmt(entry.amount)}</div>
                       </div>
                     )
