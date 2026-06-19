@@ -37,6 +37,7 @@ export const GROUPS = [
     subs: [
       { id: 'clothes',    name: '의류미용', emoji: '👗' },
       { id: 'medical',    name: '병원의료', emoji: '🏥' },
+      { id: 'transport',  name: '교통/주유', emoji: '⛽' },
       { id: 'hobby',      name: '취미활동', emoji: '🎮' },
       { id: 'edu',        name: '교육',     emoji: '📚' },
       { id: 'allowance',  name: '용돈',     emoji: '💸' },
